@@ -1,0 +1,50 @@
+# Project
+nbproject/private/
+
+# Konfigurationsdateien
+config/development/
+config/testing/
+
+# Drittanbieter-Programme
+third_party/*
+!third_party/.gitkeep
+
+# Cache, Mail und Temp
+cache/*
+temp/*
+mail/*
+!cache/.gitkeep
+!temp/.gitkeep
+!mail/.gitkeep
+
+# Dateien im framework-Verzeichnis (.gitkeep)
+!framework/core/.gitkeep
+!framework/helper/.gitkeep
+!framework/libraries/.gitkeep
+!framework/models/.gitkeep
+!framework/sql/.gitkeep
+!framework/error/.gitkeep
+
+# Dateien im app-Verzeichnis
+app/controller/*
+app/helper/*
+app/libraries/*
+app/models/*
+app/themes/*
+app/views/*
+
+# Dateien im app-Verzeichnis (.gitkeep)
+!app/controller/.gitkeep
+!app/helper/.gitkeep
+!app/libraries/.gitkeep
+!app/models/.gitkeep
+!app/themes/.gitkeep
+!app/views/.gitkeep
+
+# Dateien im admin-Verzeichnis (.gitkeep)
+!admin/controller/.gitkeep
+!admin/helper/.gitkeep
+!admin/libraries/.gitkeep
+!admin/models/.gitkeep
+!admin/themes/.gitkeep
+!admin/views/.gitkeep
