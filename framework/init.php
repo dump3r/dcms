@@ -17,3 +17,8 @@
      * Die statische Kernklasse laden
      */
     require_once DCMS_FRAMEWORK_DIR.'/core/Core.php';
+    
+    /**
+     * Die statische Logklasse laden
+     */
+    \dcms\Core::core_part('Log');
