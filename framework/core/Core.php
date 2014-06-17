@@ -61,8 +61,12 @@
             /**
              * Wurde die Datei schon unter diesem Tracker geladen ?
              */
-            if(in_array($filepath, self::$files[$tracker]) === true)
+            if(isset(self::$files[$tracker]) === false):
                 return;
+            endif;
+            if(in_array($filepath, self::$files[$tracker]) === true):
+                return;
+            endif;
             
             /**
              * Die Datei unter diesem Tracker listen.
@@ -170,7 +174,7 @@
             /**
              * Die Datei tracken
              */
-            self::track_file($directory.'/'.$filename.'.php', 'core');
+            self::track_file($directory.'/'.$name_valid.'.php', 'core');
         }
         
     }
