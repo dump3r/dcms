@@ -93,6 +93,21 @@
         }
         
         /**
+         * Alle gesammelten Logeinträge als Array zurückgeben.
+         * 
+         * @return array
+         */
+        public static function fetch()
+        {
+            return self::$logs;
+        }
+        
+        public static function save()
+        {
+            
+        }
+        
+        /**
          * Das Loglevel validieren. Wenn das Level nicht existiert
          * wird 0 zurückgegeben.
          * 
