@@ -9,13 +9,15 @@ config/testing/
 third_party/*
 !third_party/.gitkeep
 
-# Cache, Mail und Temp
+# Cache, Mail, Share und Temp
 cache/*
 temp/*
 mail/*
+share/*
 !cache/.gitkeep
 !temp/.gitkeep
 !mail/.gitkeep
+!share/.gitkeep
 
 # Dateien im framework-Verzeichnis (.gitkeep)
 !framework/core/.gitkeep
