@@ -23,7 +23,7 @@
         private static $format = 'H:i:s';
         private static $level = array('Undefined', 'Information', 'Warning', 'Error');
         
-        private static $folder = 'temp/_logs/';
+        private static $folder = 'share/logs';
         
         /**
          * Einen Logeintrag erstellen.
@@ -68,6 +68,7 @@
              * Die Nachricht eintragen
              */
             self::$logs[] = $log_string;
+            self::$last_message = $log_string;
         }
         
         /**
@@ -102,9 +103,180 @@
             return self::$logs;
         }
         
+        /**
+         * Den aktuellen Log in eine Datei speichern. Diese Methode gibt
+         * entweder FALSE zurück oder den absoluten Dateipfad zur
+         * erstellten Logdatei.
+         * 
+         * @return boolean|string
+         */
         public static function save()
         {
+            $folder = self::$folder;
+            $basepath = DCMS_ROOT.'/'.$folder;
             
+            $timestamp = time();
+            $filename = $timestamp.'.log';
+            $filepath = $basepath.'/'.$filename;
+            
+            /**
+             * Existiert das Verzeichnis und die Datei schon ?
+             */
+            if(self::_check_directory_and_file($folder, $basepath, $filepath) === false):
+                return false;
+            endif;
+            
+            /**
+             * Open the file handle
+             */
+            $handle = fopen($filepath, 'w');
+            if($handle === false):
+                self::write("Could not open file handle for $filepath!", self, 3);
+                return false;
+            endif;
+
+            $content = self::_format_file_content($filename, $timestamp);
+            return self::_write_file_content($handle, $content, $filepath);
+        }
+        
+        /**
+         * Prüfen, ob das Logverzeichnis beschreibbar ist und existiert.
+         * Es wird versucht das Verzeichnis zu erstellen, wenn es nicht da ist.
+         * Zudem wird geprüft, ob die Datei schon existiert bzw. ob diese
+         * erstellt werden kann.
+         * 
+         * @param string $folder
+         * @param string $basepath
+         * @param string $filepath
+         * @return boolean
+         */
+        private static function _check_directory_and_file($folder, $basepath, $filepath)
+        {
+            /**
+             * Existiert das Verzeichnis schon ?
+             */
+            if(is_dir($basepath) === false):
+                self::write(
+                    "The log directory $folder does not seem to exist! Attempting to create it ...", 
+                    self, 
+                    2
+                );
+                /**
+                 * Versuchen das Verzeichnis zu erstellen.
+                 */
+                $mkdir = mkdir($basepath);
+                if($mkdir === false):
+                    
+                    self::write("The log directory $folder could not be created!", null, 3);
+                    return false;
+                    
+                endif;
+            endif;
+            
+            /**
+             * Kann in das Verzeichnis geschrieben werden ?
+             */
+            if(is_writeable($basepath) === false):
+                self::write("Log file directory $folder is not writeable!", null, 3);
+                return false; 
+            endif;
+            
+            /**
+             * Wurde die Datei schon erstellt ?
+             */
+            if(file_exists($filepath) === true):
+                self::write("The log file at $filepath already exist!", null, 3);
+                return false;
+            endif;
+            
+            return true;
+        }
+        
+        /**
+         * Versuchen Inhalt in die Logdatei zu schreiben.
+         * 
+         * @param resource $handle
+         * @param string $content
+         * @return boolean
+         */
+        private static function _write_file_content($handle, $content, $filepath)
+        {
+            $fwrite = fwrite($handle, $content);
+            fclose($handle);
+            
+            if($fwrite === false):
+                self::write("Could not write logs to $filepath!", self, 3);
+                return false;
+            endif;
+            return $filepath;
+        }
+        
+        /**
+         * Den Inhalt einer Logdatei erstellen. Der Header und die Logeinträge
+         * werden automatisch formatiert.
+         * 
+         * @param string $filename
+         * @param int $timestamp
+         * @return string
+         */
+        private static function _format_file_content($filename, $timestamp)
+        {
+            /**
+             * Die Kopfzeile zusammenbauen
+             */
+            $header = array();
+            $header[] = "################ log $timestamp ################";
+            $header[] = "## filename: ".$filename;
+            $header[] = "## created: ".self::_format_timestamp('d.m.Y \a\t H:i:s', $timestamp);
+            $header[] = "## remote address: ".$_SERVER['REMOTE_ADDR'];
+            $header[] = "## request method: ".$_SERVER['REQUEST_METHOD'];
+            $header[] = "#######################################################";
+            
+            $header_string = implode("\n", $header);
+            
+            /**
+             * Die Logeinträge zusammensetzen
+             */
+            $logs = "no log messages";
+            if(empty(self::$logs) === false):
+                $logs = implode("\n", self::$logs);
+            endif;
+            
+            /**
+             * Den fertigen Dateiinhalt zurückgeben.
+             */
+            $return = $header_string."\n".$logs;
+            return $return;
+        }
+        
+        /**
+         * Überprüfen, ob das Verzeichnis für die Logdateien existiert und
+         * beschreibbar ist.
+         * 
+         * @param string $basepath
+         * @param string $folder
+         * @return boolean
+         */
+        private static function _check_directory($basepath, $folder)
+        {   
+            if(is_dir($basepath) === false):
+                
+                self::write("Log directory $folder does not exist! Attempting to create it ...", self, 2);
+            
+                $mkdir = mkdir($basepath);
+                if($mkdir === false):
+                    self::write("Could not create log file directory $folder!", self, 3);
+                    return false;
+                endif;
+                
+            endif;
+            
+            if(is_writeable($basepath) === false):
+                self::write("The log directory $folder is not writeable!", self, 3);
+                return false;
+            endif;
+            
+            return true;
         }
         
         /**
