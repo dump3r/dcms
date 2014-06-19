@@ -38,7 +38,21 @@
         
         \dcms\Core::load_file($config_file, $config_directory, false, true);
     
-        $filepath = $config_directory.'/'.$config_file.'php';
+        $filepath = $config_directory.'/'.$config_file.'.php';
         \dcms\Core::track_file($filepath, 'config');
+        \dcms\Log::write("Loaded config file from $filepath", 'init', 1);
         
     endforeach;
+    
+    /**
+     * Die Umgebungsabhängige Konfigurationsdatei laden.
+     * Diese Datei muss nicht vorhanden sein.
+     */
+    $additional_config = \dcms\Core::load_file(DCMS_ENVIRONMENT, 'config', false, false);
+    if($additional_config === true):
+        
+        $filepath = $config_directory.'/'.DCMS_ENVIRONMENT.'.php';
+        \dcms\Core::track_file($filepath, 'config');
+        \dcms\Log::write("Loaded additional config file $filepath", 'init', 1);
+        
+    endif;
