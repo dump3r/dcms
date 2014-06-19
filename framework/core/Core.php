@@ -103,6 +103,7 @@
          * Eine Datei in das System laden aber nicht tracken.
          * 
          * @param string $filename Der Dateiname ohne Dateiendung.
+         * @param string $directory Das Verzeichnis innerhalb des Systems.
          * @param boolean $once Soll die Datei per require_once eingebunden werden.
          * @param boolean $required Muss die Datei geladen werden.
          * @return boolean
