@@ -56,3 +56,22 @@
         \dcms\Log::write("Loaded additional config file $filepath", 'init', 1);
         
     endif;
+    
+    /**
+     * Die Umgebungskonstante auswerten.
+     */
+    switch(DCMS_ENVIRONMENT):
+        
+        case 'development':
+            error_reporting(E_ALL);
+            break;
+        
+        case 'testing':
+            break;
+        
+        case 'production':
+            error_reporting(0);
+            break;
+        
+    endswitch;
+    
