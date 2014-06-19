@@ -48,6 +48,20 @@
         }
         
         /**
+         * Eine Variable via var_dump innerhalb eines pre-Tags ausgeben.
+         * 
+         * @param mixed $variable
+         * @return void
+         */
+        public static function pre($variable)
+        {
+            $header = '<pre>';
+            $footer = '</pre>';
+            
+            echo $header, var_dump($variable), $footer;
+        }
+        
+        /**
          * Eine Datei unter einem Tracker listen. Diese Tracker können genutzt
          * werden, um eine Benchmarkklasse zu schreiben und das einbinden von
          * Dateien zu optimieren.
