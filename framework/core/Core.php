@@ -75,11 +75,12 @@
             /**
              * Wurde die Datei schon unter diesem Tracker geladen ?
              */
-            if(isset(self::$files[$tracker]) === false):
-                return;
-            endif;
-            if(in_array($filepath, self::$files[$tracker]) === true):
-                return;
+            if(isset(self::$files[$tracker]) === true):
+                
+                if(in_array($filepath, self::$files[$tracker]) === true):
+                    return;
+                endif;
+                
             endif;
             
             /**
