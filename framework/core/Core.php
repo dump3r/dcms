@@ -34,6 +34,15 @@
             ob_end_clean();
             
             /**
+             * Kann ein aktueller Log dargestellt werden ?
+             */
+            if(class_exists('\dcms\Log', false) === true):
+                if(DCMS_ENVIRONMENT == 'development'):
+                    \dcms\Log::display();
+                endif;
+            endif;
+            
+            /**
              * Die Nachricht formatieren.
              */
             $header = '<p style="font-family: sans-serif; font-size: 14px; color: #333333;">';
