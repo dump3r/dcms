@@ -80,3 +80,8 @@
      */
     \dcms\Core::core_part('Loader');
     
+    /**
+     * Die Singletonklasse laden
+     */
+    \dcms\Core::load_file('Singleton', 'framework/core', true, true);
+    
