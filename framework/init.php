@@ -75,3 +75,8 @@
         
     endswitch;
     
+    /**
+     * Die statische Loaderklasse laden
+     */
+    \dcms\Core::core_part('Loader');
+    
