@@ -17,6 +17,7 @@
     class Core {
         
         private static $files = array();
+        private static $log_available = false;
         
         /**
          * Das aktuelle Script stoppen, den Outputbuffer leeren und eine
@@ -200,6 +201,23 @@
              * Die Datei tracken
              */
             self::track_file($directory.'/'.$name_valid.'.php', 'core');
+            
+            /**
+             * Prüfen ob man dieses Ergeignis in der Logklasse aufzeichnen kann.
+             */
+            if(self::$log_available === true):
+                \dcms\Log::write("Loaded core class $name_valid", null, 1);
+            endif;
+        }
+        
+        /**
+         * Dem Kern mitteilen, dass die Logklasse verfügbar ist.
+         * 
+         * @param boolean $boolean
+         */
+        public static function _set_log($boolean = true)
+        {
+            self::$log_available = (boolean) $boolean;
         }
         
     }

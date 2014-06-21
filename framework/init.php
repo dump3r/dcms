@@ -22,6 +22,7 @@
      * Die statische Logklasse laden
      */
     \dcms\Core::core_part('Log');
+    \dcms\Core::_set_log(true);
     
     /**
      * Die statische Configklasse laden
