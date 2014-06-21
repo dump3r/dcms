@@ -91,3 +91,10 @@
      */
     \dcms\Core::core_part('Hooks');
     
+    
+    /**
+     * Die statische Datenbankklasse laden und die darin vorhandene
+     * init() Methode aufrufen.
+     */
+    \dcms\Core::core_part('Database');
+    \dcms\Database::init();
