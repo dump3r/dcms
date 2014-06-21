@@ -85,3 +85,8 @@
      */
     \dcms\Core::load_file('Singleton', 'framework/core', true, true);
     
+    /**
+     * Die statische Hookklasse laden
+     */
+    \dcms\Core::core_part('Hooks');
+    
