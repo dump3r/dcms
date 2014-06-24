@@ -80,6 +80,12 @@
             return $return;
         }
         
+        /**
+         * Einen Query in der aktuellen Datenbankverbindung ausführen.
+         * 
+         * @param string $query
+         * @return \mysqli_result
+         */
         public static function query($query)
         {
             $result = self::$mysqli->query($query);
@@ -88,10 +94,105 @@
             if($result === false):
                 $error = self::$mysqli->error;
                 \dcms\Log::write("Could not execute database query! ($error)", null, 3);
+                return $result;
+            endif;
+            
+            $substr_query = substr($query, 0, 128);
+            \dcms\Log::write("Executed database query ... $substr_query", null, 1);
+            return $result;
+        }
+        
+        /**
+         * Prüfen ob eine Tabelle in der aktuellen Datenbank existiert.
+         * 
+         * @param string $name
+         * @param boolean $prefix
+         * @return boolean
+         */
+        public static function table_exists($name, $prefix = true)
+        {
+            $database_name = \dcms\Config::get('db_database', 'dcms_database');
+            $database_string = self::escape($database_name);
+            
+            $table_string = self::table_name($name, $prefix);
+            
+            $query_string = "
+                SELECT COUNT(*) 
+                FROM `information_schema`.`tables` 
+                WHERE 
+                    `table_schema` = '$database_string' AND 
+                    `table_name` = '$table_string'
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not determine whether the table exists or not!", null, 3);
                 return false;
             endif;
             
-            \dcms\Log::write("Executed database query ... $substr_query", null, 1);
+            $row = $query_result->fetch_row();
+            if(isset($row[0]) === false):
+                \dcms\Log::write('Can not fetch the result of the count query!', null, 3);
+                return false;
+            endif;
+            
+            if($row[0] > 1):
+                \dcms\Log::write("More than one match for table $table_string", null, 2);
+            endif;
+            if($row[0] == 1):
+                return true;
+            endif;
+            
+            return false;
+        }
+        
+        public static function select($table, $data = array(), $prefix = true)
+        {
+            $table_name = self::table_name($table, $prefix);
+            $where_string = '';
+            
+            if(isset($data['where']) === true):
+                
+            endif;
+            
+        }
+        
+        /**
+         * Den String für die WHERE-Anweisung erstellen.
+         * 
+         * @param array $array
+         * @return string
+         */
+        private static function _where($array)
+        {
+            if(is_array($array) === false):
+                \dcms\Log::write('No array supplied!', null, 3);
+                return '';
+            endif;
+            
+            $where_string = ' WHERE ';
+            
+            foreach($array as $row):
+                
+                if(is_array($row) === false):
+                    \dcms\Log::write('You must supply an array as where clause!', null, 3);
+                    return '';
+                endif;
+                
+                $field = '`'.self::escape($row[0]).'` ';
+                $value = " '".self::escape($row[2])."' ";
+                
+                $string = $field.$row[1].$value;
+                
+                if(isset($row[3]) === true):
+                    $string .= $row[3];
+                endif;
+                
+                $where_string .= $string;
+                
+            endforeach;
+            
+            return $where_string;
         }
         
     }
