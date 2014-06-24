@@ -152,8 +152,18 @@
             $where_string = '';
             
             if(isset($data['where']) === true):
-                
+                $where_string = self::_where($data['data']);
+            else:
+                \dcms\Log::write('You did not specified an WHERE clause. All rows will be pulled!', null, 2);
             endif;
+            
+            $limit_string = '';
+            if(isset($data['start'], $data['offset']) === true):
+                $limit_string = self::_limit($data['start'], $data['offset']);
+            else:
+                \dcms\Log::write('You did not specified an limit for the SELECT query!', null, 2);
+            endif;
+            
             
         }
         
@@ -193,6 +203,30 @@
             endforeach;
             
             return $where_string;
+        }
+        
+        /**
+         * Eine LIMIT-Anweisung erstellen.
+         * 
+         * @param numeric $start
+         * @param numeric $offset
+         * @return string
+         */
+        private static function _limit($start, $offset)
+        {
+            if(is_numeric($start) === false):
+                \dcms\Log::write('The value for $start must be numeric!', null, 3);
+                return '';
+            endif;
+            if(is_numeric($offset) === false):
+                \dcms\Log::write('The value for $offset must be numeric!', null, 3);
+                return '';
+            endif;
+            
+            $return = ' LIMIT ';
+            $return .= self::escape($start).', ';
+            $return .= self::escape($offset).' ';
+            return $return;
         }
         
     }
