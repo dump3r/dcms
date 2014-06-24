@@ -46,17 +46,26 @@
     endforeach;
     
     /**
-     * Die Umgebungsabhängige Konfigurationsdatei laden.
-     * Diese Datei muss nicht vorhanden sein.
+     * Die Umgebungsabhängigen Konfigurationsdateien laden.
+     * Diese Dateien müssen nicht vorhanden sein.
      */
-    $additional_config = \dcms\Core::load_file(DCMS_ENVIRONMENT, 'config', false, false);
-    if($additional_config === true):
+    $directory = $config_directory.'/'.DCMS_ENVIRONMENT;
+    foreach($config_files as $config_file):
         
-        $filepath = $config_directory.'/'.DCMS_ENVIRONMENT.'.php';
-        \dcms\Core::track_file($filepath, 'config');
-        \dcms\Log::write("Loaded additional config file $filepath", 'init', 1);
+        $config_loaded = \dcms\Core::load_file(
+            $config_file, 
+            $directory, 
+            false, 
+            false
+        );
+    
+        if($config_loaded === true):
+            $filepath = $directory.'/'.$config_file.'.php';
+            \dcms\Core::track_file($filepath, 'config');
+            \dcms\Log::write("Loaded additional config file $filepath", 'init', 1);
+        endif;
         
-    endif;
+    endforeach;
     
     /**
      * Die Umgebungskonstante auswerten.
