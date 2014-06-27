@@ -48,6 +48,20 @@
     \dcms\Config::set('mailer_folder', 'mail');
     
     /**
+     * SMTP Servereinstellungen
+     * ------------------------
+     * Diese Einstellungen werden von der Mailerklasse genutzt, um
+     * eine Verbindung zu einem SMTP Server herzustellen. EMails werden dann
+     * über diesen Server versendet anstatt die PHP mail() Funktion zu nutzen.
+     */
+    \dcms\Config::set('smtp_use', false);
+    \dcms\Config::set('smtp_server', 'localhost');
+    \dcms\Config::set('smtp_port', 25);
+    \dcms\Config::set('smtp_auth', false);
+    \dcms\Config::set('smtp_username', '');
+    \dcms\Config::set('smtp_password', '');
+    
+    /**
      * Datenbankeinstellungen
      * ----------------------
      * Dieses System unterstützt im Moment nur MySQL durch die mysqli

@@ -102,8 +102,19 @@
     
     
     /**
+     * Den Hookpoint pre_database und die darin enthaltenen Funktionen
+     * aufrufen.
+     */
+    \dcms\Hooks::call('pre_database');
+    
+    /**
      * Die statische Datenbankklasse laden und die darin vorhandene
      * init() Methode aufrufen.
      */
     \dcms\Core::core_part('Database');
     \dcms\Database::init();
+    
+    /**
+     * Den Hookpoint post_database aufrufen.
+     */
+    \dcms\Hooks::call('post_database');

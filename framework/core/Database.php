@@ -18,6 +18,7 @@
         /* @var $mysqli \mysqli */
         private static $mysqli;
         public static $last_query;
+        public static $insert_id;
         
         /**
          * Die statische Datenbankklasse initialisieren.
@@ -146,15 +147,42 @@
             return false;
         }
         
+        /**
+         * Einen SELECT query aufbauen und ausführen. Diese Methode kann
+         * entweder FALSE zurückgeben oder ein mysqli_result-Objekt.
+         * 
+         * @param string $table
+         * @param array $data
+         * @param boolean $prefix
+         * @return boolean|mysqli_result
+         */
         public static function select($table, $data = array(), $prefix = true)
         {
             $table_name = self::table_name($table, $prefix);
             $where_string = '';
             
+            $select_string = '*';
+            if(isset($data['select']) === true):
+                if(is_array($data['select']) === false):
+                    \dcms\Log::write('You must supply an array for the SELECT caluse!', null, 2);
+                    return false;
+                endif;
+                $select_array = array();
+                foreach($data['select'] as $field):
+                    $select_array[] = '`'.self::escape($field).'`';
+                endforeach;
+                $select_string = implode(', ', $select_array);
+            endif;
+            
             if(isset($data['where']) === true):
-                $where_string = self::_where($data['data']);
+                $where_string = self::_where($data['where']);
             else:
                 \dcms\Log::write('You did not specified an WHERE clause. All rows will be pulled!', null, 2);
+            endif;
+            
+            $order_string = '';
+            if(isset($data['orderby'], $data['ordertype'])):
+                $order_string = 'ORDER BY `'.self::escape($data['orderby']).'` '.$data['ordertype'];
             endif;
             
             $limit_string = '';
@@ -164,6 +192,45 @@
                 \dcms\Log::write('You did not specified an limit for the SELECT query!', null, 2);
             endif;
             
+            $query_string = "
+                SELECT $select_string
+                FROM `$table_name`
+                $where_string
+                $order_string
+                $limit_string;
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not complete SELECT query on $table_name!", null, 3);
+                return false;
+            endif;
+            
+            return $query_result;
+        }
+        
+        public static function insert($table, $data, $prefix = true)
+        {
+            $table_name = self::table_name($table, $prefix);
+            
+            if(is_array($data) === false):
+                \dcms\Log::write('You must supply an array for $data.', null, 3);
+                return false;
+            endif;
+        }
+        
+        public static function update($table, $data, $prefix = true)
+        {
+            
+        }
+        
+        public static function delete($table, $where, $prefix = true)
+        {
+            
+        }
+        
+        public static function truncate($table, $prefix = true)
+        {
             
         }
         
