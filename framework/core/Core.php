@@ -137,6 +137,13 @@
             if(file_exists($path) === false):
                 
                 /**
+                 * Wenn verfügbar einen Logeintrag erstellen.
+                 */
+                if(self::$log_available === true):
+                    \dcms\Log::write("Could not load file $filename_valid from $directory/", null, 3);
+                endif;
+                
+                /**
                  * Prüfen ob die Datei benötigt wird.
                  */
                 if($required === true):
@@ -152,6 +159,13 @@
             endif;
             
             /**
+             * Wenn verfügbar die Logklasse aufrufen und einen Eintrag erstellen.
+             */
+            if(self::$log_available === true):
+                \dcms\Log::write("Including file $filename_valid from $directory/ ...", null, 1);
+            endif;
+            
+            /**
              * Soll die Datei mit require oder require_once eingebunden werden.
              * In beiden Fällen wird TRUE zurückgegeben.
              */
@@ -160,7 +174,7 @@
                 return true;
             endif;
             
-            require $path;
+            require $path;            
             return true;
         }
         
