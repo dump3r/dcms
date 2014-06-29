@@ -131,7 +131,7 @@
          * @param string $class_name
          * @return boolean
          */
-        private static function _load($directory, $filename, $tracker, $init, $namespace, $class_name)
+        protected static function _load($directory, $filename, $tracker, $init, $namespace, $class_name)
         {
             $base_array = array(
                 array('framework', ''),
@@ -170,7 +170,7 @@
          * @param boolean $init
          * @return void
          */
-        private static function _initialize_class($class_name, $init)
+        protected static function _initialize_class($class_name, $init)
         {
             if($init === false)
                 return;

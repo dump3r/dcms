@@ -16,8 +16,8 @@
      */
     class Core {
         
-        private static $files = array();
-        private static $log_available = false;
+        protected static $files = array();
+        protected static $log_available = false;
         
         /**
          * Das aktuelle Script stoppen, den Outputbuffer leeren und eine

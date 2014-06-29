@@ -16,7 +16,7 @@
      */
     class Hooks {
         
-        private static $hooks = array(
+        protected static $hooks = array(
             'pre_database' => array(),
             'post_database' => array(),
             'pre_autoloader' => array(),

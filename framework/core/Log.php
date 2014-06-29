@@ -17,13 +17,13 @@
      */
     class Log {
         
-        private static $logs = array();
-        private static $last_message = '';
+        protected static $logs = array();
+        protected static $last_message = '';
         
-        private static $format = 'H:i:s';
-        private static $level = array('Undefined', 'Information', 'Warning', 'Error');
+        protected static $format = 'H:i:s';
+        protected static $level = array('Undefined', 'Information', 'Warning', 'Error');
         
-        private static $folder = 'share/logs';
+        protected static $folder = 'share/logs';
         
         /**
          * Einen Logeintrag erstellen.
@@ -150,7 +150,7 @@
          * @param string $filepath
          * @return boolean
          */
-        private static function _check_directory_and_file($folder, $basepath, $filepath)
+        protected static function _check_directory_and_file($folder, $basepath, $filepath)
         {
             /**
              * Existiert das Verzeichnis schon ?
@@ -199,7 +199,7 @@
          * @param string $content
          * @return boolean
          */
-        private static function _write_file_content($handle, $content, $filepath)
+        protected static function _write_file_content($handle, $content, $filepath)
         {
             $fwrite = fwrite($handle, $content);
             fclose($handle);
@@ -219,7 +219,7 @@
          * @param int $timestamp
          * @return string
          */
-        private static function _format_file_content($filename, $timestamp)
+        protected static function _format_file_content($filename, $timestamp)
         {
             /**
              * Die Kopfzeile zusammenbauen
@@ -257,7 +257,7 @@
          * @param string $folder
          * @return boolean
          */
-        private static function _check_directory($basepath, $folder)
+        protected static function _check_directory($basepath, $folder)
         {   
             if(is_dir($basepath) === false):
                 
@@ -286,7 +286,7 @@
          * @param int $integer
          * @return int
          */
-        private static function _check_level($integer)
+        protected static function _check_level($integer)
         {
             $level = self::$level;
             $return = (int) $integer;
@@ -311,7 +311,7 @@
          * @param int $time
          * @return string
          */
-        private static function _format_timestamp($format = 'H:i:s', $time = -1)
+        protected static function _format_timestamp($format = 'H:i:s', $time = -1)
         {
             $timestamp = (int) $time;
             if(is_numeric($time) === false || $time < 0):
@@ -331,7 +331,7 @@
          * @param mixed $origin
          * @return string
          */
-        private static function _get_origin($origin)
+        protected static function _get_origin($origin)
         {
             if(is_string($origin) === true):
                 return $origin;

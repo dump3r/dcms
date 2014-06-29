@@ -16,7 +16,7 @@
      */
     class Config {
         
-        private static $values = array();
+        protected static $values = array();
         
         /**
          * Einen Konfigurationswert setzen.

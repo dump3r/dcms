@@ -16,7 +16,7 @@
     class Database {
         
         /* @var $mysqli \mysqli */
-        private static $mysqli;
+        protected static $mysqli;
         public static $last_query;
         public static $insert_id;
         
@@ -373,7 +373,7 @@
          * @param array $array
          * @return string
          */
-        private static function _where($array)
+        protected static function _where($array)
         {
             if(is_array($array) === false):
                 \dcms\Log::write('No array supplied!', null, 3);
@@ -412,7 +412,7 @@
          * @param numeric $offset
          * @return string
          */
-        private static function _limit($start, $offset)
+        protected static function _limit($start, $offset)
         {
             if(is_numeric($start) === false):
                 \dcms\Log::write('The value for $start must be numeric!', null, 3);
