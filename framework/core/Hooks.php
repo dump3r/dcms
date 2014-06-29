@@ -22,7 +22,10 @@
             'pre_autoloader' => array(),
             'post_autoloader' => array(),
             'pre_controller' => array(),
-            'construct_controller' => array()
+            'construct_controller' => array(),
+            'post_controller' => array(),
+            'pre_view' => array(),
+            'post_view' => array()
         );
         
         /**
