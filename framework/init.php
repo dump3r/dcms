@@ -100,6 +100,13 @@
      */
     \dcms\Core::core_part('Hooks');
     
+    /**
+     * Nach einer benutzerdefinierten hooks.php suchen.
+     */
+    $loaded_hooks = \dcms\Core::load_file('hooks', DCMS_CALL, true, false);
+    if($loaded_hooks === true):
+        \dcms\Core::track_file(DCMS_CALL.'/hooks.php', 'hooks');
+    endif;
     
     /**
      * Den Hookpoint pre_database und die darin enthaltenen Funktionen
