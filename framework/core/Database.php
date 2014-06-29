@@ -209,6 +209,14 @@
             return $query_result;
         }
         
+        /**
+         * Einen INSERT Query ausführen.
+         * 
+         * @param string $table
+         * @param array $data
+         * @param boolean $prefix
+         * @return boolean
+         */
         public static function insert($table, $data, $prefix = true)
         {
             $table_name = self::table_name($table, $prefix);
@@ -217,21 +225,146 @@
                 \dcms\Log::write('You must supply an array for $data.', null, 3);
                 return false;
             endif;
+            
+            $fields_array = array();
+            $values_array = array();
+            
+            foreach($data as $field => $value):
+                
+                $fields_array[] = '`'.self::escape($field).'`';
+                $values_array[] = "'".self::escape($value)."'";
+                
+            endforeach;
+            
+            $field_string = implode(', ', $fields_array);
+            $value_string = implode(', ', $values_array);
+            
+            $query_string = "
+                INSERT INTO `$table_name`
+                ($field_string)
+                VALUES ($value_string)
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not insert data into $table_name", null, 3);
+                return false;
+            endif;
+            
+            self::$insert_id = self::$mysqli->insert_id;
+            return true;
         }
         
+        /**
+         * Einen UPDATE Query ausführen.
+         * 
+         * @param string $table
+         * @param array $data
+         * @param boolean $prefix
+         * @return boolean
+         */
         public static function update($table, $data, $prefix = true)
         {
+            $table_name = self::table_name($table, $prefix);
             
+            if(is_array($data) === false):
+                \dcms\Log::write('You must supply an array for $data', null, 3);
+                return false;
+            endif;
+            
+            if(isset($data['set']) === false):
+                \dcms\Log::write('You did not specified what should be updated!', null, 3);
+                return false;
+            endif;
+            
+            $set_array = array();
+            foreach($data['set'] as $field => $value):
+                $set_array[] = "`".self::escape($field)."` = '".self::escape($value)."'";
+            endforeach;
+            $set_string = implode(', ', $set_array);
+            
+            $where_string = '';
+            if(isset($data['where']) === true):
+                $where_string = self::_where($data['where']);
+            else:
+                \dcms\Log::write('No WHERE clause found. All fields will be updated!', null, 2);
+            endif;
+            
+            $query_string = "
+                UPDATE `$table_name`
+                SET $set_string
+                $where_string
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not update data in $table_name", null, 3);
+                return false;
+            endif;
+            
+            return true;
         }
         
+        /**
+         * Einen DELETE Query aufbauen und ausführen.
+         * 
+         * @param string $table
+         * @param array $where
+         * @param boolean $prefix
+         * @return boolean
+         */
         public static function delete($table, $where, $prefix = true)
         {
+            $table_name = self::table_name($table, $prefix);
             
+            if(is_array($where) === false):
+                \dcms\Log::write('No array supplied for $where', null, 3);
+                return false;
+            endif;
+            $where_string = self::_where($where);
+            
+            if(empty($where) === true):
+                \dcms\Log::write('No WHERE clause defined! All rows will be deleted!', null, 2);
+            endif;
+            
+            $query_string = "
+                DELETE FROM `$table_name`
+                $where_string
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not delete rows in $table_name", null, 3);
+                return false;
+            endif;
+            
+            return false;
         }
         
+        /**
+         * Einen TRUNCATE Query in einer Tabelle ausführen.
+         * Es werden alle Daten in dieser Tabelle gelöscht!
+         * 
+         * @param string $table
+         * @param boolean $prefix
+         * @return boolean
+         */
         public static function truncate($table, $prefix = true)
-        {
+        {   
+            $table_name = self::table_name($table, $prefix);
+            \dcms\Log::write("This will delete all data in table $table_name!", null, 2);
             
+            $query_string = "
+                TRUNCATE `$table_name`
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not truncate table $table_name", null, 3);
+                return false;
+            endif;
+            
+            return true;
         }
         
         /**
