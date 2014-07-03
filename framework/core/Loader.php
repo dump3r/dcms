@@ -135,7 +135,7 @@
         {
             $base_array = array(
                 array('framework', ''),
-                array(DCMS_CALL, DCMS_CALL)
+                array(DCMS_CALL, '\\'.DCMS_CALL)
             );
             
             foreach($base_array as $base):
@@ -148,7 +148,7 @@
                     $filepath = $basepath.'/'.$filename.'.php';
                     \dcms\Log::write("Loaded file from $filepath", null, 1);
                     
-                    $full_class_name = "\dcms\\$namespace\\{$base[1]}\\$class_name";
+                    $full_class_name = "\dcms\\$namespace{$base[1]}\\$class_name";
                     self::_initialize_class($full_class_name, $init);
                     \dcms\Core::track_file($filepath, $tracker);
                     
