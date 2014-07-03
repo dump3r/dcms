@@ -130,3 +130,8 @@
      * Die statische Inputklasse laden.
      */
     \dcms\Core::core_part('Input');
+    
+    /**
+     * Die URL-Klasse laden.
+     */
+    \dcms\Loader::library('Url');
