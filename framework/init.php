@@ -125,3 +125,8 @@
      * Den Hookpoint post_database aufrufen.
      */
     \dcms\Hooks::call('post_database');
+    
+    /**
+     * Die statische Inputklasse laden.
+     */
+    \dcms\Core::core_part('Input');
