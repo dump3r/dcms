@@ -29,5 +29,5 @@
      * Hier wird eine Standardroute und eine Fehlerroute für 404 Fehler
      * definiert.
      */
-    \dcms\Config::set('route_default', array('home', 'index'));
-    \dcms\Config::set('route_404', array('error', 'page_missing'));
+    \dcms\Config::set('route_default', 'home/index');
+    \dcms\Config::set('route_404', 'error/page_missing');
