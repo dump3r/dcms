@@ -86,6 +86,16 @@
     endswitch;
     
     /**
+     * Nach der autoload.php im third-party Verzeichnis suchen.
+     */
+    \dcms\Core::load_file('autoload', 'third_party', true, true);
+    
+    /**
+     * Die statische Errorklasse laden.
+     */
+    \dcms\Core::core_part('Error');
+    
+    /**
      * Die statische Loaderklasse laden
      */
     \dcms\Core::core_part('Loader');
