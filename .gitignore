@@ -9,18 +9,26 @@ config/testing/
 composer.lock
 third_party/*
 !third_party/.gitkeep
+!third_party/.htaccess
 
 # Cache, Mail, Share und Temp
 cache/*
 temp/*
-mail/*
-share/*
+share/logs/*
+share/mails/*
 !cache/.gitkeep
 !temp/.gitkeep
-!mail/.gitkeep
 !share/.gitkeep
+!share/logs/.gitkeep
+!share/mails/.gitkeep
+!cache/.htaccess
+!temp/.htaccess
+!share/.htaccess
+!share/logs/.htaccess
+!share/mails/.htaccess
 
 # Dateien im framework-Verzeichnis (.gitkeep)
+!framework/.htaccess
 !framework/core/.gitkeep
 !framework/helper/.gitkeep
 !framework/libraries/.gitkeep
@@ -37,6 +45,7 @@ app/themes/*
 app/views/*
 
 # Dateien im app-Verzeichnis (.gitkeep)
+!app/.htaccess
 !app/controller/.gitkeep
 !app/helper/.gitkeep
 !app/libraries/.gitkeep
@@ -45,6 +54,7 @@ app/views/*
 !app/views/.gitkeep
 
 # Dateien im admin-Verzeichnis (.gitkeep)
+!admin/.htaccess
 !admin/controller/.gitkeep
 !admin/helper/.gitkeep
 !admin/libraries/.gitkeep
