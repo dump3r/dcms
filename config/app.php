@@ -25,7 +25,8 @@
      * URL-Einstellungen
      * -----------------
      */
-    \dcms\Config::set('url_pattern', 'a-zA-Z0-9./-');
+    \dcms\Config::set('url_index', 'index.php');
+    \dcms\Config::set('url_pattern', 'a-zA-Z0-9./-_');
     \dcms\Config::set('url_rewrite', false);
     
     /**
