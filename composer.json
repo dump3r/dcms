@@ -7,6 +7,6 @@
         "phpmailer/phpmailer": "v5.2.7"
     },
     "config": {
-        "vendor-dir": "framework/third-party"
+        "vendor-dir": "third_party"
     }
 }
