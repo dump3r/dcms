@@ -11,10 +11,15 @@
      * Projekteinstellungen
      * --------------------
      * Hier wird unter anderem der Projekttitel festgelegt.
-     * Man könnte auch hier einen Konigurationsparameter für eine
-     * Theme-Logik setzen sollte man eine solche einbauen.
      */
     \dcms\Config::set('app_title', 'Projekttitel');
+    
+    /**
+     * Themeeinstellungen
+     * ------------------
+     */
+    \dcms\Config::set('theme_name', '');
+    \dcms\Config::set('theme_extension', '.php');
     
     /**
      * URL-Einstellungen

@@ -10,11 +10,16 @@
     /**
      * Admineinstellungen
      * --------------------
-     * Hier wird der Ttitel für das Administrationsinterface
-     * und das Theme für das Interface festgelegt.
+     * Hier wird der Ttitel für das Administrationsinterface.
      */
     \dcms\Config::set('admin_title', 'administrator');
-    \dcms\Config::set('admin_theme', 'default');
+    
+    /**
+     * Themeeinstellungen
+     * ------------------
+     */
+    \dcms\Config::set('theme_name', 'default');
+    \dcms\Config::set('theme_extension', '.tpl');
     
     /**
      * URL-Einstellungen
