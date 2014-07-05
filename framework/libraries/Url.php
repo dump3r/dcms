@@ -112,15 +112,46 @@
             return $this->base_url('public/'.$string);
         }
         
+        /**
+         * Einen String parsen und in Segmente unterteilen.
+         * 
+         * @param string $string
+         * @return array|boolean
+         */
         public function parse_string($string)
         {
+            if(is_string($string) === false):
+                \dcms\Log::write('No string supplied!', null, 3);
+                return false;
+            endif;
             
+            $pattern_part = \dcms\Config::get('url_pattern', '');
+            if(empty($pattern_part) === false):
+                $pattern = '#[^'.$pattern_part.']#';
+                $result = preg_match($pattern, $string);
+                if($result === false or $result > 0):
+                    \dcms\Log::write('Could not parse string! Forbidden characters found.', null, 3);
+                    return false;
+                endif;
+            endif;
+            
+            $array = explode('/', $string);
+            if(isset($array[0]) === false):
+                \dcms\Log::write('No array elements found!', null, 3);
+                return false;
+            endif;
+            if(isset($array[1]) or empty($array[1]))
+                $array[1] = 'index';
+            
+            return $array;
         }
         
         /**
          * Den URL String auslesen. Es wird zunächst nach der PATH_INFO
          * Variable in $_SERVER gesucht. Wird diese nicht gefunden, wird
-         * der Standardwert der Konfiguration ('route_default') genutzt-
+         * der Standardwert der Konfiguration ('route_default') genutzt.
+         * 
+         * @return void
          */
         protected function _get_string()
         {
