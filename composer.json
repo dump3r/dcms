@@ -4,7 +4,8 @@
         "smarty/smarty": "v3.1.18",
         "leafo/lessphp": "v0.4.0",
         "matthiasmullie/minify": "1.2.0",
-        "phpmailer/phpmailer": "v5.2.7"
+        "phpmailer/phpmailer": "v5.2.7",
+        "erusev/parsedown": "1.0.1"
     },
     "config": {
         "vendor-dir": "third_party"
