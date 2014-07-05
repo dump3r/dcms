@@ -5,6 +5,9 @@
         <testsuite name="Framework Core">
             <directory>../tests/framework/core</directory>
         </testsuite>
+        <testsuite name="Framework Libraries">
+            <directory>../tests/framework/libraries</directory>
+        </testsuite>
     </testsuites>
     
 </phpunit>
