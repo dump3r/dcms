@@ -24,10 +24,59 @@
             $this->_validate_string();
             
             /**
-             * Den String parsen
+             * Den String parsen und in Segmente unterteilen
              */
+            $this->_parse_string();
+            
+            /**
+             * Die ersten beiden Elemente prüfen
+             */
+            $this->_check_segments();
             
             \dcms\Log::write('Done loading the url class', null, 1);
+        }
+        
+        /**
+         * Ein URL Segment auslesen. Wurde das Segment nicht gesetzt, 
+         * wird der Wert in $default zurückgegeben.
+         * Wird für $n eine Zahl kleiner als 1 übergeben,
+         * wird der ganze Array mit Segmenten zurückgegeben.
+         * 
+         * @param int $n
+         * @param mixed $default
+         * @return mixed
+         */
+        public function segment($n = 0, $default = false)
+        {
+            /**
+             * $n eins runterzählen.
+             */
+            $n--;
+            
+            /**
+             * Wenn ein Wert kleiner als 0  für $n übergeben wurde,
+             * wird der ganze Array zurückgegeben.
+             */
+            if($n < 0)
+                return $this->segments;
+            
+            /**
+             * Entweder das Segment oder den Wert in $default zurückgeben..
+             */
+            if(isset($this->segments[$n]) === false)
+                return $default;
+            
+            return $this->segments[$n];
+        }
+        
+        public function base_url($uri = '')
+        {
+            
+        }
+        
+        public function index_url($uri = '')
+        {
+            
         }
         
         /**
@@ -54,6 +103,12 @@
             endif;
         }
         
+        /**
+         * Den URL Stirng durch preg_match prüfen. Es wird nur geprüft,
+         * wenn ein Wert für url_pattern in der Knfiguration angegeben wurde.
+         * 
+         * @return void
+         */
         protected function _validate_string()
         {
             /**
@@ -71,14 +126,47 @@
              * Den URL String mit preg_match prüfen.
              */
             $result = preg_match('#[^'.$pattern.']#', $this->string);
-            if($result > 0):
-                
+            if($result > 0 or $result === false):
+                // @TODO Trigger error
             endif;
+            
+            return;
         }
         
+        /**
+         * Den URL String in Segmente unterteilen und
+         * prüfen ob alle wichtigen Elemente gesetzt sind.
+         * 
+         * @return void
+         */
         protected function _parse_string()
         {
+            $array = explode('/', $this->string);
             
+            /**
+             * Wurde das zweite Element gesetzt.
+             */
+            if(isset($array[1]) === false or empty($array[1]))
+                $array[1] = 'index';
+            
+            
+            $this->segments = $array;
+        }
+        
+        /**
+         * Die ersten beiden Segmente auf verbotene Zeichen prüfen.
+         * 
+         * @return void
+         */
+        protected function _check_segments()
+        {
+            $segments = array($this->segments[0], $this->segments[1]);
+            foreach($segments as $key => $segment):
+                
+                $string = str_replace('-', '_', $segment);
+                $this->segments[$key] = $string;
+                
+            endforeach;
         }
         
     }
