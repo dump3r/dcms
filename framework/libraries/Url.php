@@ -69,12 +69,50 @@
             return $this->segments[$n];
         }
         
+        /**
+         * Einen URL-String erstellen.
+         * 
+         * @param string $uri
+         * @return string
+         */
         public function base_url($uri = '')
         {
+            /**
+             * Die Standardwert festlegen.
+             */
+            $protocol = (isset($_SERVER['HTTPS']) === false or $_SERVER['HTTPS'] == 'off' ? 'http://' : 'https://');
+            $default_url = $protocol.$_SERVER['SERVER_NAME'].'/';
             
+            /**
+             * Die URL aus der Konfiguration auslesen.
+             */
+            $base_url = \dcms\Config::get('url_base', $default_url);
+            
+            /**
+             * Den URL String aufbauen
+             */
+            return $base_url.$uri;
         }
         
+        /**
+         * Eine URL erstellen.
+         * 
+         * @param string $uri
+         * @return string
+         */
         public function index_url($uri = '')
+        {
+            $index_file = \dcms\Config::get('url_index', 'index.php');
+            $rewrite_url = \dcms\Config::get('url_rewrite', false);
+            
+            $string = $index_file.'/'.$uri;
+            if($rewrite_url === false)
+                return $this->base_url($string);
+            
+            return $this->base_url('public/'.$string);
+        }
+        
+        public function parse_string($string)
         {
             
         }
@@ -127,7 +165,9 @@
              */
             $result = preg_match('#[^'.$pattern.']#', $this->string);
             if($result > 0 or $result === false):
-                // @TODO Trigger error
+                /**
+                 * @todo Trigger error
+                 */
             endif;
             
             return;
