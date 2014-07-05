@@ -5,6 +5,14 @@
     if(!defined('DCMS_SECURE'))
         exit('Verboten!');
     
+    /**
+     * Die URL-Klasse verwaltet die URL-Segmente der Anfrage und kann genutzt
+     * werden um URLs zu generieren.
+     * 
+     * @author dump3r
+     * @version 1.0.0
+     * @see http://blaargh.de/dcms/docs/library/Url
+     */
     class Url extends \dcms\Singleton {
         
         protected static $instance;
