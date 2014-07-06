@@ -145,3 +145,15 @@
      * Die URL-Klasse laden.
      */
     \dcms\Loader::library('Url');
+    
+    /**
+     * Die statische Outputklasse laden.
+     */
+    \dcms\Core::core_part('Output');
+    
+    /**
+     * Die Standardwerte für den HTTP Status und den Content-type senden.
+     */
+    \dcms\Output::clear();
+    \dcms\Output::status();
+    \dcms\Output::content_type();
