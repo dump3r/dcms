@@ -91,6 +91,13 @@
     \dcms\Core::load_file('autoload', 'third_party', true, true);
     
     /**
+     * Die Template Engines laden.
+     */
+    \dcms\Core::load_file('Standard', 'framework/template', true, true);
+    \dcms\Core::load_file('Smarty', 'framework/template', true, true);
+    \dcms\Core::load_file('Markdown', 'framework/template', true, true);
+    
+    /**
      * Die statische Errorklasse laden.
      */
     \dcms\Core::core_part('Error');
