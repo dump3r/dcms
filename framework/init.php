@@ -30,6 +30,11 @@
     \dcms\Core::_check_directory_permissions();
     
     /**
+     * Die Filelibrary laden.
+     */
+    \dcms\Core::load_file('File', 'framework/libraries', true, true);
+    
+    /**
      * Die statische Configklasse laden
      */
     \dcms\Core::core_part('Config');
