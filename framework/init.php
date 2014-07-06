@@ -126,10 +126,13 @@
     
     /**
      * Die statische Datenbankklasse laden und die darin vorhandene
-     * init() Methode aufrufen.
+     * init() Methode aufrufen. Diese Datenbankklasse wird nur geladen, wenn
+     * keine Tests ausgeführt werden.
      */
-    \dcms\Core::core_part('Database');
-    \dcms\Database::init();
+    if(!defined('PHP_UNIT')):
+        \dcms\Core::core_part('Database');
+        \dcms\Database::init();
+    endif;
     
     /**
      * Den Hookpoint post_database aufrufen.
@@ -153,7 +156,10 @@
     
     /**
      * Die Standardwerte für den HTTP Status und den Content-type senden.
+     * Diese werden nur gesendet, wenn keine PHPUnit-Tests ausgeführt werden.
      */
-    \dcms\Output::clear();
-    \dcms\Output::status();
-    \dcms\Output::content_type();
+    if(!defined('PHP_UNIT')):
+        \dcms\Output::clear();
+        \dcms\Output::status();
+        \dcms\Output::content_type();
+    endif;

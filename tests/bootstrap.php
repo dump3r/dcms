@@ -6,6 +6,9 @@
     // set DCMS_CALL
     define('DCMS_CALL', 'tests');
     
+    // set PHP_UNIT
+    define('PHP_UNIT', true);
+    
     // load the system constants
     require_once dirname(__FILE__).'/../constants.php';
     
