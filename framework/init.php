@@ -25,6 +25,11 @@
     \dcms\Core::_set_log(true);
     
     /**
+     * Prüfen ob die Verzeichnisse cache, temp und share beschrieben werden können.
+     */
+    \dcms\Core::_check_directory_permissions();
+    
+    /**
      * Die statische Configklasse laden
      */
     \dcms\Core::core_part('Config');

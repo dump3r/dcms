@@ -38,7 +38,7 @@
              * Kann ein aktueller Log dargestellt werden ?
              */
             if(class_exists('\dcms\Log', false) === true):
-                if(DCMS_ENVIRONMENT == 'development'):
+                if(defined('DCMS_ENVIRONMENT') === true and DCMS_ENVIRONMENT == 'development'):
                     \dcms\Log::display();
                 endif;
             endif;
@@ -232,6 +232,24 @@
         public static function _set_log($boolean = true)
         {
             self::$log_available = (boolean) $boolean;
+        }
+        
+        /**
+         * Die Verzeichnisse temp, cache und share auf Schreibrechte prüfen.
+         * Das System wird gestoppt, sollte in einem der Verzeichnisse nicht
+         * geschrieben werden dürfen.
+         * 
+         * @return void
+         */
+        public static function _check_directory_permissions()
+        {
+            $directories = array('cache', 'temp', 'share');
+            foreach($directories as $dir):
+                
+                if(is_writable(DCMS_ROOT.'/'.$dir.'/') === false)
+                    self::kill ("Directory <i>$dir</i> is not writeable!");
+                
+            endforeach;
         }
         
     }
