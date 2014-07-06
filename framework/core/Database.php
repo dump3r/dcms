@@ -103,6 +103,39 @@
             return $result;
         }
         
+        public static function count($table, $where, $prefix = true)
+        {
+            $table_name = self::table_name($table, $prefix);
+            
+            if(is_array($where) === false):
+                \dcms\Log::write('No array supplied!', null, 3);
+                return false;
+            endif;
+            $where_string = self::_where($where);
+            
+            $query_string = "
+                SELECT COUNT(*)
+                FROM `$table_name`
+                $where_string
+            ";
+            $query_result = self::query($query_string);
+            
+            if($query_result === false):
+                \dcms\Log::write("Could not count rows in $table_name!", null, 3);
+                return false;
+            endif;
+            
+            $row = $query_result->fetch_row();
+            $query_result->free();
+            
+            if(isset($row[0]) === false):
+                \dcms\Log::write("Could not get row of counted rows!", null, 3);
+                return false;
+            endif;
+            
+            return $row[0];
+        }
+        
         /**
          * Prüfen ob eine Tabelle in der aktuellen Datenbank existiert.
          * 
@@ -134,6 +167,7 @@
             $row = $query_result->fetch_row();
             if(isset($row[0]) === false):
                 \dcms\Log::write('Can not fetch the result of the count query!', null, 3);
+                $query_result->free();
                 return false;
             endif;
             
@@ -141,9 +175,11 @@
                 \dcms\Log::write("More than one match for table $table_string", null, 2);
             endif;
             if($row[0] == 1):
+                $query_result->free();
                 return true;
             endif;
             
+            $query_result->free();
             return false;
         }
         
@@ -251,7 +287,9 @@
                 return false;
             endif;
             
+            $query_result->free();
             self::$insert_id = self::$mysqli->insert_id;
+            
             return true;
         }
         
@@ -302,6 +340,7 @@
                 return false;
             endif;
             
+            $query_result->free();
             return true;
         }
         
@@ -338,6 +377,7 @@
                 return false;
             endif;
             
+            $query_result->free();
             return false;
         }
         
@@ -364,6 +404,7 @@
                 return false;
             endif;
             
+            $query_result->free();
             return true;
         }
         
@@ -379,6 +420,9 @@
                 \dcms\Log::write('No array supplied!', null, 3);
                 return '';
             endif;
+            
+            if(empty($array) === true)
+                return '';
             
             $where_string = ' WHERE ';
             
