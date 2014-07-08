@@ -18,15 +18,87 @@
         protected $handle;
         
         /**
-         * Einen Filehandler für die Datei in $filepath erstellen.
-         * Als $mode kann alles genutzt werden, was die fopen()-Funktion
-         * unterstützt.
-         * 
          * @param string $filepath
+         */
+        public function __construct($filepath) {
+            $this->filepath = $filepath;
+        }
+        
+        /**
+         * Prüfen ob die Datei bereits existiert.
+         * 
+         * @param boolean $prevent_log
+         * @return boolean
+         */
+        public function exists($prevent_log = false)
+        {
+            if(file_exists($this->filepath) === false):
+                
+                if($prevent_log === false)
+                    \dcms\Log::write("File {$this->filepath} does not exist!", null, 3);
+                
+                return false;
+                
+            endif;
+            return true;
+        }
+        
+        /**
+         * Prüfen ob die Datei beschrieben bzw. erstellt werden kann.
+         * 
+         * @param boolean $prevent_log
+         * @return boolean
+         */
+        public function is_writeable($prevent_log = false)
+        {
+            $path = $this->filepath;
+            if($this->exists(false) === false)
+                $path = dirname($this->filepath);
+            
+            $result = is_writeable($path);
+            if($result === false):
+                
+                if($prevent_log === false)
+                    \dcms\Log::write("File {$this->filepath} is not writeable!", null, 3);
+                
+                return false;
+                
+            endif;
+            
+            return true;
+        }
+        
+        /**
+         * Prüfen ob eine Datei gelesen werden kann.
+         * 
+         * @param boolean $prevent_log
+         * @return boolean
+         */
+        public function is_readable($prevent_log = false)
+        {
+            $path = $this->filepath;
+            if($this->exists(false) === false)
+                $path = dirname($this->filepath);
+            
+            $result = is_readable($path);
+            if($result === false):
+                
+                if($prevent_log === false)
+                    \dcms\Log::write("File {$this->filepath} is not readable!", null, 3);
+                    
+                return false;
+            endif;
+            
+            return true;
+        }
+        
+        /**
+         * Versuchen einen Filehandler zu öffnen.
+         * 
          * @param string $mode
          * @return boolean
          */
-        public function open($filepath, $mode = 'w')
+        public function open($mode = 'w')
         {
             $this->filepath = $filepath;
             $this->handle = fopen($filepath, $mode);
@@ -56,6 +128,11 @@
             endif;
             
             return true;
+        }
+        
+        public function read()
+        {
+            
         }
         
         /**

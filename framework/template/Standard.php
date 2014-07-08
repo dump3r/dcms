@@ -141,19 +141,25 @@
             /**
              * Den Inhalt schreiben.
              */
-            $file = new \dcms\library\File();
-            $file->open($filepath.$filename, 'w');
+            $cache_file = $filepath.$filename;
+            $file = new \dcms\library\File($cache_file);
             
-            $write_result = $file->write($content);
-            $file->close();
-            
-            if($write_result === false):
-                \dcms\Log::write("Could not write into cache file $filename", null, 3);
-                return false;
+            if($file->is_writeable()):
+                
+                $file->open('w');
+
+                $write_result = $file->write($content);
+                $file->close();
+
+                if($write_result === false)
+                    return false;
+
+                $this->_cache_set = true;
+                return $cache_file;
+                
             endif;
             
-            $this->_cache_set = true;
-            return $filepath.$filename;
+            return false;
         }
         
         /**
