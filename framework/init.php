@@ -136,25 +136,27 @@
     endif;
     
     /**
-     * Den Hookpoint pre_database und die darin enthaltenen Funktionen
-     * aufrufen.
-     */
-    \dcms\Hooks::call('pre_database');
-    
-    /**
      * Die statische Datenbankklasse laden und die darin vorhandene
      * init() Methode aufrufen. Diese Datenbankklasse wird nur geladen, wenn
      * keine Tests ausgeführt werden.
      */
     if(!defined('PHP_UNIT')):
+        
+        /**
+         * Den Hookpoint pre_database und die darin enthaltenen Funktionen
+         * aufrufen.
+         */
+        \dcms\Hooks::call('pre_database');
+        
         \dcms\Core::core_part('Database');
         \dcms\Database::init();
+        
+        /**
+         * Den Hookpoint post_database aufrufen.
+         */
+        \dcms\Hooks::call('post_database');
+        
     endif;
-    
-    /**
-     * Den Hookpoint post_database aufrufen.
-     */
-    \dcms\Hooks::call('post_database');
     
     /**
      * Die statische Inputklasse laden.
