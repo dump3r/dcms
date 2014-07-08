@@ -100,10 +100,9 @@
          */
         public function open($mode = 'w')
         {
-            $this->filepath = $filepath;
-            $this->handle = fopen($filepath, $mode);
+            $this->handle = fopen($this->filepath, $mode);
             if($this->handle === false):
-                \dcms\Log::write("Could not create filehandle for $filepath!", null, 3);
+                \dcms\Log::write("Could not create filehandle for {$this->filepath}!", null, 3);
                 return false;
             endif;
             return true;
@@ -130,9 +129,23 @@
             return true;
         }
         
-        public function read()
+        /**
+         * Liest die Anzahl an Bytes aus der aktuellen Datei.
+         * 
+         * @param int $length
+         * @return boolean
+         */
+        public function read($length)
         {
+            if($this->handle === false)
+                return false;
             
+            $fread = fread($this->handle, $length);
+            if($fread !== false)
+                return $fread;
+            
+            \dcms\Log::write("Could not execute fread on current filehandle!", null, 3);
+            return false;
         }
         
         /**
@@ -154,6 +167,21 @@
             endif;
             
             return true;
+        }
+        
+        /**
+         * Gibt den aktuellen Filehandler zurück, 
+         * sofern einer vorhanden ist.
+         * 
+         * @return boolean|resource
+         */
+        public function get_handler()
+        {
+            if($this->handle !== false)
+                return $this->handle;
+            
+            \dcms\Log::write("Can not return non-existing filhandle!", null, 3);
+            return false;
         }
         
     }
