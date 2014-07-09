@@ -147,18 +147,17 @@
             if($file->is_writeable()):
                 
                 $file->open('w');
+                
+                if($file->write($content)):
+                    $file->close();
 
-                $write_result = $file->write($content);
-                $file->close();
-
-                if($write_result === false)
-                    return false;
-
-                $this->_cache_set = true;
-                return $cache_file;
+                    $this->_cache_set = true;
+                    return $cache_file;
+                endif;
                 
             endif;
             
+            \dcms\Log::write("Could not write cache file for {$this->_template_file}", null, 3);
             return false;
         }
         
