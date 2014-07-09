@@ -268,7 +268,7 @@
         protected function _set_template_directory($directory = null)
         {
             if(empty($directory) === false):
-                $this->_template_path = DCMS_ROOT.'/'.$directory;
+                $this->_template_path = DCMS_ROOT.'/'.$directory.'/';
                 return;
             endif;
             
