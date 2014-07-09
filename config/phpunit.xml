@@ -8,6 +8,9 @@
         <testsuite name="Framework Libraries">
             <directory>../tests/framework/libraries</directory>
         </testsuite>
+        <testsuite name="Framework Templates">
+            <directory>../tests/framework/template</directory>
+        </testsuite>
     </testsuites>
     
 </phpunit>

@@ -15,6 +15,9 @@
     // load the system core
     require_once DCMS_FRAMEWORK_DIR.'/init.php';
     
+    // disable error_reporting()
+    error_reporting(0);
+    
     // load the core mock
     \dcms\Core::load_file('CoreMock', 'tests/mocks/framework/core', true, true);
     
