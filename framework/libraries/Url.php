@@ -204,9 +204,7 @@
              */
             $result = preg_match('#[^'.$pattern.']#', $this->string);
             if($result > 0 or $result === false):
-                /**
-                 * @todo Trigger error
-                 */
+                \dcms\Error::display('url/forbidden_chars');
             endif;
             
             return;
