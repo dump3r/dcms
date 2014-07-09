@@ -20,8 +20,11 @@
         /**
          * @param string $filepath
          */
-        public function __construct($filepath) {
+        public function __construct($filepath, $prepend_basedir = false) {
             $this->filepath = $filepath;
+            
+            if($prepend_basedir === true)
+                $this->filepath = DCMS_ROOT.'/'.$filepath;
         }
         
         /**
