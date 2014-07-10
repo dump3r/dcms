@@ -174,11 +174,37 @@
     \dcms\Core::core_part('Output');
     
     /**
-     * Die Standardwerte für den HTTP Status und den Content-type senden.
-     * Diese werden nur gesendet, wenn keine PHPUnit-Tests ausgeführt werden.
+     * Den folgenden Code nur ausführen, wenn keine PHPUnit-Tests
+     * ausgeführt werden.
      */
     if(!defined('PHP_UNIT')):
+        
+        /**
+         * Die Standardwerte für den HTTP Status und den Content-type senden.
+         * Diese werden nur gesendet, wenn keine PHPUnit-Tests ausgeführt werden.
+         */
         \dcms\Output::clear();
         \dcms\Output::status();
         \dcms\Output::content_type();
+        
+        /**
+         * Die Routerlibrary laden und eine Instanz davon erstellen.
+         */
+        \dcms\Loader::library('Router', false);
+        
+        /**
+         * Den Basecontroller laden.
+         */
+        \dcms\Core::load_file('Base', 'framework/controller', true, true);
+        
+        /* @var $route \dcms\library\Router */
+        $route = \dcms\library\Router::get();
+        
+        /**
+         * Versuchen den Controller und das View zu instanzieieren.
+         */
+        if($route->route() === false):
+            $route->show_404();
+        endif;
+        
     endif;

@@ -1,11 +1,11 @@
 <div class="wrapper">
-    <h1>Leere URL Zeichenkette &uuml;bergeben</h1>
+    <h1>Das Routing konnte nicht beendet werden</h1>
     <div class="inner">
         
         <p>
-            Es wurde eine leere URL Zeichenkette &uuml;bergeben.
-            Bitte gehe zur&uuml;ck und versuche es erneut.
-            <a href="<?php echo $base_url; ?>">Zur&uuml;ck zur Startseite</a>
+            Die Routerklasse hat das Routing gestoppt.
+            Entweder ist keine Controller- bzw. Viewklasse definiert
+            oder die Namen der Methoden stimmen nicht &uuml;berein.
         </p>
         
         <?php if(DCMS_ENVIRONMENT == 'development'): ?>
