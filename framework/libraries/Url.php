@@ -148,7 +148,7 @@
                 \dcms\Log::write('No array elements found!', null, 3);
                 return false;
             endif;
-            if(isset($array[1]) or empty($array[1]))
+            if(isset($array[1]) === false or empty($array[1]))
                 $array[1] = 'index';
             
             return $array;
