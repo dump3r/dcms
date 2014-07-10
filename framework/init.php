@@ -103,9 +103,17 @@
     /**
      * Die Template Engines laden.
      */
-    \dcms\Core::load_file('Standard', 'framework/template', true, true);
-    \dcms\Core::load_file('Smarty', 'framework/template', true, true);
-    \dcms\Core::load_file('Markdown', 'framework/template', true, true);
+    $template_engines = array(
+        'Standard' => 'framework/template',
+        'Smarty'   => 'framework/template',
+        'Markdown' => 'framework/template'
+    );
+    foreach($template_engines as $name => $directory):
+        
+        \dcms\Core::load_file($name, $directory, true, true);
+        \dcms\Core::track_file($directory.'/'.$name.'.php', 'template');
+        
+    endforeach;
     
     /**
      * Die statische Errorklasse laden.
@@ -121,6 +129,7 @@
      * Die Singletonklasse laden
      */
     \dcms\Core::load_file('Singleton', 'framework/core', true, true);
+    \dcms\Core::track_file('framework/core/Singleton.php', 'singleton');
     
     /**
      * Die statische Hookklasse laden
@@ -196,6 +205,7 @@
          * Den Basecontroller laden.
          */
         \dcms\Core::load_file('Base', 'framework/controller', true, true);
+        \dcms\Core::track_file('framework/controller/Base.php', 'controller');
         
         /* @var $route \dcms\library\Router */
         $route = \dcms\library\Router::get();

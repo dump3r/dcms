@@ -141,6 +141,7 @@
             $this->controller_instance = new $controller_name($view);
             $this->controller_name = $controller;
             
+            \dcms\Core::track_file($this->controller_path.'/'.$controller.'.php', 'controller');
             return true;
         }
         
@@ -199,6 +200,7 @@
             $this->view_name = $controller;
             $this->view_instance = new $view_name();
             
+            \dcms\Core::track_file($this->view_path.'/'.$controller.'.php', 'view');
             return true;
         }
         
