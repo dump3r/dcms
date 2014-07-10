@@ -29,6 +29,7 @@ share/mails/*
 
 # Dateien im framework-Verzeichnis (.gitkeep)
 !framework/.htaccess
+!framework/controller/.gitkeep
 !framework/core/.gitkeep
 !framework/helper/.gitkeep
 !framework/libraries/.gitkeep
