@@ -240,7 +240,12 @@
             $segments = array($this->segments[0], $this->segments[1]);
             foreach($segments as $key => $segment):
                 
-                $string = str_replace('-', '_', $segment);
+                $search = array('-', '.');
+                $string = str_replace($search, '', $segment);
+                
+                if(empty($string) === true or strlen($string) < 2)
+                    \dcms\Error::display ('url/empty');
+                
                 $this->segments[$key] = $string;
                 
             endforeach;
