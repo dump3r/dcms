@@ -287,9 +287,7 @@
                 return false;
             endif;
             
-            $query_result->free();
             self::$insert_id = self::$mysqli->insert_id;
-            
             return true;
         }
         
@@ -340,7 +338,6 @@
                 return false;
             endif;
             
-            $query_result->free();
             return true;
         }
         
@@ -377,7 +374,6 @@
                 return false;
             endif;
             
-            $query_result->free();
             return false;
         }
         
@@ -404,7 +400,6 @@
                 return false;
             endif;
             
-            $query_result->free();
             return true;
         }
         
