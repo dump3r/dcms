@@ -17,7 +17,8 @@
      * Description of Mailer
      *
      * @author dump3r
-     * @version 1.0.5
+     * @version 1.0.0
+     * @since 1.0.5
      * @see http://blaargh.de/dcms/docs/library/Mailer
      */
     class Mailer extends \dcms\Singleton {

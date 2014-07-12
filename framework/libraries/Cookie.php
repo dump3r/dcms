@@ -6,7 +6,8 @@
      * Description of Cookie
      *
      * @author dump3r
-     * @version 1.1.0
+     * @version 1.0.0
+     * @since 1.1.0
      * @see http://blaargh.de/dcms/docs/library/Cookie
      */
     class Cookie extends \dcms\Singleton {
