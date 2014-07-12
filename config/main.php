@@ -45,7 +45,7 @@
     \dcms\Config::set('mailer_sender_name', 'dCMS Mailcore');
     \dcms\Config::set('mailer_save', false);
     \dcms\Config::set('mailer_save_type', 'database');
-    \dcms\Config::set('mailer_folder', 'mail');
+    \dcms\Config::set('mailer_folder', 'share/mails');
     
     /**
      * SMTP Servereinstellungen

@@ -12,7 +12,7 @@
     /**
      * Die Systemversion von dCMS.
      */
-    define('DCMS_VERSION', '1.0.4');
+    define('DCMS_VERSION', '1.0.41');
     
     /**
      * Das Hauptverzeichnis von dCMS.
