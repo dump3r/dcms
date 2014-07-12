@@ -43,9 +43,126 @@
             return $default;
         }
         
+        /**
+         * Ein Cookie erstellen. Wird ein Array für $value übergeben,
+         * wird es in ein JSON String umgewandelt.
+         * 
+         * @param string $name
+         * @param string|array $value
+         * @param int $ttl
+         * @param boolean $prefix
+         * @return boolean
+         */
         public function set($name, $value, $ttl = 7200, $prefix = true)
         {
+            $cookie_name = $this->_cookie_name($name, $prefix);
+            $cookie_path = \dcms\Config::get('cookie_path', '/');
+            $cookie_domain = \dcms\Config::get('cookie_domain', null);
+            $cookie_secure = \dcms\Config::get('cookie_secure', false);
+            $cookie_httponly = \dcms\Config::get('cookie_httponly', false);
             
+            /**
+             * Wenn $value ein Array ist wird es in ein JSON String umgewandelt
+             */
+            if(is_array($value))
+                $value = json_encode ($value);
+            
+            /**
+             * Wenn $ttl exakt 0 ist wird kein Zeitstempel addiert.
+             */
+            if($ttl !== 0)
+                $ttl = time() + $ttl;
+            
+            /**
+             * Das Cookie erstellen.
+             */
+            $setcookie = setcookie(
+                $cookie_name,
+                $value,
+                $ttl,
+                $cookie_path,
+                $cookie_domain,
+                $cookie_secure,
+                $cookie_httponly
+            );
+            
+            return $setcookie;
+        }
+        
+        /**
+         * Ein Cookie löschen.
+         * 
+         * @param string $name
+         * @param boolean $prefix
+         * @return boolean
+         */
+        public function delete($name, $prefix = true)
+        {
+            return $this->set($name, null, -7200, $prefix);
+        }
+        
+        /**
+         * Ein Cookie erneuern.
+         * 
+         * @param string $name
+         * @param int $ttl
+         * @param boolean $prefix
+         * @return boolean
+         */
+        public function rearm($name, $ttl = 7200, $prefix = true)
+        {
+            $cookie_value = $this->grab($name, false, false, $prefix);
+            if($cookie_value === false):
+                \dcms\Log::write("Can not rearm non-existing cookie $cookie_name!", null, 3);
+                return false;
+            endif;
+            
+            return $this->set($name, $cookie_value, $ttl, $prefix);
+        }
+        
+        /**
+         * Ein CSRF-Cookie erstellen.
+         * 
+         * @param string $name
+         * @param int $ttl
+         * @param boolean $prefix
+         * @return boolean
+         */
+        public function set_csrf_cookie($name = 'csrf', $ttl = 7200, $prefix = true)
+        {
+            /**
+             * Einen String für das Cookie erstellen.
+             */
+            $hash_chars = str_shuffle($this->csrf_chars).time().str_shuffle($this->csrf_chars);
+            $hash_value = hash($this->hashing_type, $hash_chars);
+            
+            /**
+             * Das Cookie setzen
+             */
+            return $this->set($name, $hash_value, $ttl, $prefix);
+        }
+        
+        /**
+         * Ein String mit dem CSRF-Cookie vergleichen.
+         * 
+         * @param string $value
+         * @param string $name
+         * @param boolean $prefix
+         * @return boolean
+         */
+        public function check_csrf_cookie($value, $name = 'csrf', $prefix = true)
+        {
+            $cookie_value = $this->grab($name, false, false, $prefix);
+            if($cookie_value === false):
+                \dcms\Log::write("Can not get CSRF cookie value from non-existing cookie", null, 3);
+                return false;
+            endif;
+            
+            if($value == $cookie_value)
+                return true;
+            
+            \dcms\Log::write("Cookie value and supplied value does not match! Possible CSRF attack ...", null, 3);
+            return false;
         }
         
         /**
