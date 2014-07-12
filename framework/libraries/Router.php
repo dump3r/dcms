@@ -96,7 +96,7 @@
                     
                 endif;
                 
-                \dcms\Log::write("View class $view could not be created!", null, 3);
+                \dcms\Log::write("View class $controller could not be created!", null, 3);
                 
             else:
                 

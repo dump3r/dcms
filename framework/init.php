@@ -126,6 +126,11 @@
     \dcms\Core::core_part('Loader');
     
     /**
+     * Weiterleitungen zu Coremethoden laden.
+     */
+    \dcms\Loader::helper('core');
+    
+    /**
      * Die Singletonklasse laden
      */
     \dcms\Core::load_file('Singleton', 'framework/core', true, true);
