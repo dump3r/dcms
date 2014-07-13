@@ -14,6 +14,7 @@ third_party/*
 # Cache, Mail, Share und Temp
 cache/*
 temp/*
+share/*
 share/logs/*
 share/mails/*
 !cache/.gitkeep
@@ -23,7 +24,7 @@ share/mails/*
 !share/mails/.gitkeep
 !cache/.htaccess
 !temp/.htaccess
-!share/.htaccess
+!share/.gitkeep
 !share/logs/.htaccess
 !share/mails/.htaccess
 

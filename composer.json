@@ -5,7 +5,8 @@
         "leafo/lessphp": "v0.4.0",
         "matthiasmullie/minify": "1.2.0",
         "phpmailer/phpmailer": "v5.2.7",
-        "erusev/parsedown": "1.0.1"
+        "erusev/parsedown": "1.0.1",
+        "tedivm/jshrink": "v1.0.0"
     },
     "config": {
         "vendor-dir": "third_party"
